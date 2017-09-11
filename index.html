@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .color {
+      color: darkcyan;
+      background-color: #000000;
+    }
+    
+    .flex {
+      display: flex;
+    }
+
+    #d1{
+        height: 5px;
+        background-color: #000;
+    }
+    
+    .pr {
+      position: relative;
+    }
+    
+    .flex_2 {
+      flex: 2;
+    }
+    
+    .line {
+      height: 5px;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="d1" class="pr">
+
+  </div>
+</body>
+<script>
+  const obj = {
+    totalValue: 100,
+    sign: "公斤",
+    value: 70,
+    list: [{
+      "color": "darkblue",
+      "name": "偏低",
+      "placeholderValue": 30,
+    }, {
+      "color": "darkcyan",
+      "name": "正好",
+      "placeholderValue": 60,
+    }]
+  };
+
+
+  const list = obj.list
+  const len = list.length
+  let i
+  let str = ''
+  for (i = 0; i < len; i++) {
+    const item = list[i]
+    const index = len - i
+    console.log(item)
+    const strLine = templateLine(item, index, (item.placeholderValue / obj.totalValue) * 100)
+    str += strLine
+  }
+
+  console.log(str)
+
+  const d1 = document.getElementById("d1")
+
+  d1.innerHTML = str
+
+  function templateLine(obj, index, cal) {
+    return `
+      <div class="flex_2 line" style="background-color:${obj.color};width:${cal}%;z-index:${index};" ></div>
+      `
+  }
+
+  function templatePoint(width){
+    return `
+     <div class="flex_2 point" style="background-color:${obj.color};width:${cal}%;" ></div>
+    `
+  }
+</script>
+
+</html>
