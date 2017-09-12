@@ -9,35 +9,37 @@
   <style>
     .color {
       color: darkcyan;
-      background-color: #000000;
+      background-color: #611E1E;
     }
-    
     .flex {
       display: flex;
     }
-
-    #d1{
-        height: 5px;
-        background-color: #000;
+    #d1 {
+      height: 5px;
+      /* background-color: #000; */
     }
-    
     .pr {
       position: relative;
     }
-    
-    .flex_2 {
-      flex: 2;
-    }
-    
     .line {
-      height: 5px;
+      border-top-style: solid;
+      border-top-width: 5px;
+      padding-top: 5px;
+      display: inline-block;
+      text-align: center;
+    }
+    .point{
       position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 0;
+      transform:translate(-50%,-50%);
     }
   </style>
 </head>
 
 <body>
-  <div id="d1" class="pr">
+  <div id="d1" class="pr flex">
 
   </div>
 </body>
@@ -54,6 +56,10 @@
       "color": "darkcyan",
       "name": "正好",
       "placeholderValue": 60,
+    }, {
+      "color": "#611E1E",
+      "name": "偏高",
+      "placeholderValue": 10,
     }]
   };
 
@@ -65,27 +71,48 @@
   for (i = 0; i < len; i++) {
     const item = list[i]
     const index = len - i
-    console.log(item)
     const strLine = templateLine(item, index, (item.placeholderValue / obj.totalValue) * 100)
     str += strLine
   }
 
-  console.log(str)
+  const color = getColor(obj)
+  const pointStr = templatePoint(color, (obj.value / obj.totalValue) * 100)
 
   const d1 = document.getElementById("d1")
 
-  d1.innerHTML = str
+  d1.innerHTML = str + pointStr
 
   function templateLine(obj, index, cal) {
     return `
-      <div class="flex_2 line" style="background-color:${obj.color};width:${cal}%;z-index:${index};" ></div>
+      <div class="line" style="border-color:${obj.color};width:${cal}%;z-index:${index};" >${obj.name}</div>
       `
   }
 
-  function templatePoint(width){
+  function templatePoint(color, cal) {
     return `
-     <div class="flex_2 point" style="background-color:${obj.color};width:${cal}%;" ></div>
+     <div class="point" style="background-color:${color};left:${cal}%;" ></div>
     `
+  }
+
+  function getColor(obj) {
+    const list = obj.list
+    const value = obj.value
+    const len = list.length
+    let v = 0
+    let i
+    let itemO
+    for (i = 0; i < len; i++) {
+      const item = list[i]
+      v += item.placeholderValue
+      if (v > value) {
+        itemO = item
+        break
+      }
+    }
+
+    if (itemO) {
+      return itemO.color
+    }
   }
 </script>
 
